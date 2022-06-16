@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-from hw3.stud.implementation import build_model_123, build_model_23, build_model_3
+from stud.implementation import build_model_123, build_model_23, build_model_3
 
 app = Flask(__name__)
 model_123 = build_model_123("cpu")

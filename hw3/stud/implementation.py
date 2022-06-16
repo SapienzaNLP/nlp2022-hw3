@@ -3,8 +3,7 @@ import re
 import numpy as np
 from typing import List, Tuple, Dict
 
-from hw3.evaluate import read_dataset
-from hw3.model import Model
+from model import Model
 
 
 def build_model_123(device: str) -> Model:

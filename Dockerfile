@@ -3,19 +3,15 @@ FROM python:3.9-slim
 WORKDIR /home/app
 
 # install requirements
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # copy model
-
 COPY model model
 
 # copy code
-
-COPY hw1 hw1
-ENV PYTHONPATH hw1
+COPY hw3 hw3
+ENV PYTHONPATH hw3
 
 # standard cmd
-
-CMD [ "python", "hw1/app.py" ]
+CMD [ "python", "hw3/app.py" ]

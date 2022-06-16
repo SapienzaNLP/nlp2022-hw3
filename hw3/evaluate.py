@@ -29,7 +29,7 @@ def read_dataset(path: str) -> List[Dict]:
     samples: List[Dict] = []
     pron_counter = Counter()
     with open(path) as f:
-
+        next(f)
         for line in f:
             (
                 id,
