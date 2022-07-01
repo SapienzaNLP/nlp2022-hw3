@@ -148,25 +148,31 @@ def evaluate(predictions_s, samples):
     correct = 0
     for pred, label in zip(predictions_s, samples):
         gold_pron_offset = label["p_offset"]
-        pred_pron_offset = pred[0][1] if len(pred[0]) > 0 else -1
+        pred_pron_offset = pred[0][1] if len(pred[0]) > 0 else None
         gold_pron = label["pron"]
-        pred_pron = pred[0][0] if len(pred[0]) > 0 else -1
-        gold_entity_offset = (
-            label["offset_A"] if label["is_coref_A"] == "TRUE" else label["offset_B"]
-        )
-        gold_entity = (
-            label["entity_A"] if label["is_coref_A"] == "TRUE" else label["entity_B"]
-        )
-        pred_entity_offset = pred[1][1] if len(pred[1]) > 0 else -1
-        pred_entity = pred[1][0] if len(pred[1]) > 0 else -1
-        if (
-            gold_pron_offset == pred_pron_offset
-            and gold_pron == pred_pron
-            and gold_entity_offset == pred_entity_offset
-            and gold_entity == pred_entity
-        ):
-            correct += 1
-        total += 1
+        pred_pron = pred[0][0] if len(pred[0]) > 0 else None
+        gold_both_wrong = label["is_coref_A"] == "FALSE" and label["is_coref_B"] == "FALSE"
+        pred_entity_offset = pred[1][1] if len(pred[1]) > 0 else None
+        pred_entity = pred[1][0] if len(pred[1]) > 0 else None
+        if gold_both_wrong:
+            if pred_entity is None and gold_pron_offset == pred_pron_offset and gold_pron == pred_pron:
+                correct += 1
+            total += 1
+        else:
+            gold_entity_offset = (
+                label["offset_A"] if label["is_coref_A"] == "TRUE" else label["offset_B"]
+            )
+            gold_entity = (
+                label["entity_A"] if label["is_coref_A"] == "TRUE" else label["entity_B"]
+            )
+            if (
+                gold_pron_offset == pred_pron_offset
+                and gold_pron == pred_pron
+                and gold_entity_offset == pred_entity_offset
+                and gold_entity == pred_entity
+            ):
+                correct += 1
+            total += 1
     print(f"# instances: {total}")
     acc = float(correct) / total
     print(f"# accuracy: {acc:.4f}")
